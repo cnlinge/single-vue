@@ -2,12 +2,10 @@
 
 > vue微前端项目
 
-
-
-# FAQ
+# step
 
 1. webpack打包生成的 chunk-vendors.js app.js
-2. 
+2. 子应用打包自动生成manifest文件在住应用中加载注册
 
 # 参考文章
 

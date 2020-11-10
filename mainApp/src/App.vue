@@ -1,10 +1,10 @@
 <template>
   <div>
     <div>
-      <div>aaaa11</div>
       <div @click="skip(1)">子应用1</div>
       <div @click="skip(2)">子应用2</div>
     </div>
+    <div>--------------------------</div>
     <div id="child1"></div>
     <div id="child2"></div>
   </div>
