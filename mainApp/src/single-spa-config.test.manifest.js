@@ -19,15 +19,14 @@ import axios from 'axios'
   //       "js/app.17e2f4be.js.map"
   //     ],
   // }
-
 const getManifest = async (url, bundle) => {
   return new Promise((resolve) => {
     return axios.get(url).then(({data}) => { // 获取manifest文件
-      const { entrypoints, publicPath } = data;
+      const { entrypoints } = data;
       const assets = entrypoints[bundle].assets;
       const promises = [] // 根据manifest文件 的资源路径加载资源
       for (let i = 0; i < assets.length; i++) {
-        promises.push(runScript(publicPath + assets[i])) // publicPath资源路径 与子应用打包相关
+        promises.push(runScript('http://127.0.0.1:8887/child1App/dist/' + assets[i]))
       }
       return Promise.all(promises).then(() => {
         resolve()
@@ -50,14 +49,15 @@ const runScript = async (url) => {
 singleSpa.registerApplication( //注册微前端服务
   'singleVueChild1', 
     async () => {
-      if ('development' === process.env.NODE_ENV) {
-        await runScript('http://localhost:8083/js/chunk-vendors.js');
-        await runScript('http://localhost:8083/js/app.js')
-        return window.singleVueChild1;
-      } else {
-        await getManifest('http://127.0.0.1:8083/manifest.json', 'app')
+      // if ('development' === process.env.NODE_ENV) {
+      //   await runScript('http://localhost:8083/js/chunk-vendors.js');
+      //   await runScript('http://localhost:8083/js/app.js')
+      //   return window.singleVueChild1;
+      // } else {
+      //   await getManifest('http://127.0.0.1:8083/manifest.json', 'app')
+        await getManifest('http://127.0.0.1:8887/child1App/dist/manifest.json', 'app')
         return window.singleVueChild1
-      }
+      // }
     },
     location => location.pathname.startsWith('/child1-app') // 配置微前端模块前缀
 );
