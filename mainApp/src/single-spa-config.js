@@ -16,22 +16,19 @@ const runScript = async (url) => {
 singleSpa.registerApplication( //注册微前端服务
   'singleVueChild1', 
     async () => {
-      let singleVue = null
       await runScript('http://localhost:8083/js/chunk-vendors.js');
-      await runScript('http://localhost:8083/js/app.js').then(() => {
-        singleVue = window.singleVueChild1
-      }); 
-      console.log(singleVue)
-      return singleVue;
+      await runScript('http://localhost:8083/js/app.js')
+      return window.singleVueChild1;
     },
     location => location.pathname.startsWith('/child1-app') // 配置微前端模块前缀
 );
+// 是对应的路由匹配的时候才加载 js文件
 singleSpa.registerApplication( //注册微前端服务
   'singleVueChild2', 
   async () => {
     await runScript('http://localhost:8084/js/chunk-vendors.js');
     await runScript('http://localhost:8084/js/app.js'); 
-    return window.singleVueChild2;
+    return window.singleVueChild2; // 加载bundle文件, 此处的singleVueChild2 是在webpack打包时设置的library名称
   },
   location => location.pathname.startsWith('/child2-app') // 配置微前端模块前缀
 );
